@@ -91,7 +91,7 @@ MythicLock.Parent = game.CoreGui
 MythicLock.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = MythicLock
-Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Changed to black
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
 Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Frame.BorderSizePixel = 0
 Frame.Position = UDim2.new(0.133798108, 0, 0.20107238, 0)
@@ -110,7 +110,7 @@ UICorner.Parent = Frame
 
 Logo.Name = "Logo"
 Logo.Parent = Frame
-Logo.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Logo.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
 Logo.BackgroundTransparency = 5.000
 Logo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Logo.BorderSizePixel = 0
@@ -120,7 +120,7 @@ Logo.Image = "rbxassetid://2233"
 Logo.ImageTransparency = 0.200
 
 TextButton.Parent = Frame
-TextButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Changed to black
+TextButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
 TextButton.BackgroundTransparency = 5.000
 TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TextButton.BorderSizePixel = 0
@@ -128,7 +128,7 @@ TextButton.Position = UDim2.new(0.0792079195, 0, 0.18571429, 0)
 TextButton.Size = UDim2.new(0, 170, 0, 44)
 TextButton.Font = Enum.Font.SourceSansSemibold
 TextButton.Text = "Toggle CamLock"
-TextButton.TextColor3 = Color3.fromRGB(128, 0, 128) -- Changed to cyan
+TextButton.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
 TextButton.TextScaled = true
 TextButton.TextSize = 14.000
 TextButton.TextWrapped = true
@@ -147,7 +147,223 @@ TextButton.MouseButton1Click:Connect(
         end
     end
 )
--- Function to hide the loading screen after a certain duration
-local function HideLoadingScreen()
-    LoadingScreen:Destroy()
+
+-- Add FOV functionality
+local FOVCircle = Drawing.new("Circle")
+FOVCircle.Visible = false -- Initially hidden
+FOVCircle.Color = Color3.fromRGB(0, 0, 0) -- Black
+FOVCircle.Transparency = 0.1 -- Low transparency
+FOVCircle.Thickness = 1
+FOVCircle.Radius = 50 -- Small size
+FOVCircle.Filled = true -- Filled
+
+-- Show FOV circle when locking onto an enemy
+RunService.RenderStepped:Connect(function()
+    if CamlockState and enemy then
+        local camera = workspace.CurrentCamera
+        local viewportPoint, onScreen = camera:WorldToViewportPoint(enemy.Position)
+        if onScreen then
+            FOVCircle.Position = Vector2.new(viewportPoint.X, viewportPoint.Y)
+            FOVCircle.Visible = true
+        else
+            FOVCircle.Visible = false
+        end
+    else
+        FOVCircle.Visible = false
+    end
+end)
+
+local AutoAirState = false
+
+local AutoAirButton = Instance.new("TextButton")
+AutoAirButton.Parent = Frame
+AutoAirButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+AutoAirButton.BackgroundTransparency = 5.000
+AutoAirButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
+AutoAirButton.BorderSizePixel = 0
+AutoAirButton.Position = UDim2.new(0.0792079195, 0, 0.7, 0) -- Below the Camlock button
+AutoAirButton.Size = UDim2.new(0, 120, 0, 30) -- Smaller size
+AutoAirButton.Font = Enum.Font.SourceSansSemibold
+AutoAirButton.Text = "Toggle AutoAir"
+AutoAirButton.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+AutoAirButton.TextScaled = true
+AutoAirButton.TextSize = 12.000
+AutoAirButton.TextWrapped = true
+
+-- AutoAir button functionality
+AutoAirButton.MouseButton1Click:Connect(
+    function()
+        AutoAirState = not AutoAirState
+        if AutoAirState then
+            AutoAirButton.Text = "AutoAir ON"
+        else
+            AutoAirButton.Text = "AutoAir OFF"
+        end
+    end
+)
+
+-- Auto Air functionality: Shoot once when the target jumps
+local hasShot = false
+
+RunService.RenderStepped:Connect(function()
+    if AutoAirState and CamlockState and enemy then
+        local targetHumanoid = enemy.Parent:FindFirstChild("Humanoid")
+        if targetHumanoid and not hasShot and (targetHumanoid:GetState() == Enum.HumanoidStateType.Jumping or targetHumanoid:GetState() == Enum.HumanoidStateType.Freefall) then
+            hasShot = true
+            task.wait(0.22) -- Delay of 0.22 seconds
+            local playerCharacter = LocalPlayer.Character
+            local tool = playerCharacter and playerCharacter:FindFirstChildOfClass("Tool")
+            if tool then
+                tool:Activate()
+            end
+        elseif targetHumanoid and targetHumanoid:GetState() ~= Enum.HumanoidStateType.Jumping and targetHumanoid:GetState() ~= Enum.HumanoidStateType.Freefall then
+            hasShot = false -- Reset after the target is no longer jumping
+        end
+    end
+end)
+
+-- Create a frame for the Prediction changer GUI
+local PredictionFrame = Instance.new("Frame")
+PredictionFrame.Parent = MythicLock
+PredictionFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+PredictionFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
+PredictionFrame.BorderSizePixel = 0
+PredictionFrame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Center of the screen
+PredictionFrame.Size = UDim2.new(0, 300, 0, 150) -- Frame size
+PredictionFrame.Visible = false -- Initially hidden
+PredictionFrame.Active = true
+PredictionFrame.Draggable = true
+
+local PredictionTitle = Instance.new("TextLabel")
+PredictionTitle.Parent = PredictionFrame
+PredictionTitle.Text = "Prediction Changer"
+PredictionTitle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+PredictionTitle.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+PredictionTitle.Size = UDim2.new(1, 0, 0.2, 0)
+PredictionTitle.Font = Enum.Font.SourceSansBold
+PredictionTitle.TextScaled = true
+
+local PredictionInput = Instance.new("TextBox")
+PredictionInput.Parent = PredictionFrame
+PredictionInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+PredictionInput.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+PredictionInput.Position = UDim2.new(0.1, 0, 0.3, 0)
+PredictionInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+PredictionInput.Font = Enum.Font.SourceSansSemibold
+PredictionInput.Text = tostring(Prediction)
+PredictionInput.PlaceholderText = "Main Prediction"
+PredictionInput.TextScaled = true
+
+local HorizontalPredictionInput = Instance.new("TextBox")
+HorizontalPredictionInput.Parent = PredictionFrame
+HorizontalPredictionInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+HorizontalPredictionInput.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+HorizontalPredictionInput.Position = UDim2.new(0.1, 0, 0.55, 0)
+HorizontalPredictionInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+HorizontalPredictionInput.Font = Enum.Font.SourceSansSemibold
+HorizontalPredictionInput.Text = tostring(HorizontalPrediction)
+HorizontalPredictionInput.PlaceholderText = "Horizontal Prediction"
+HorizontalPredictionInput.TextScaled = true
+
+local VerticalPredictionInput = Instance.new("TextBox")
+VerticalPredictionInput.Parent = PredictionFrame
+VerticalPredictionInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+VerticalPredictionInput.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+VerticalPredictionInput.Position = UDim2.new(0.1, 0, 0.8, 0)
+VerticalPredictionInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+VerticalPredictionInput.Font = Enum.Font.SourceSansSemibold
+VerticalPredictionInput.Text = tostring(VerticalPrediction)
+VerticalPredictionInput.PlaceholderText = "Vertical Prediction"
+VerticalPredictionInput.TextScaled = true
+
+-- Button to toggle the visibility of the Prediction changer GUI
+local TogglePredictionButton = Instance.new("TextButton")
+TogglePredictionButton.Parent = Frame
+TogglePredictionButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+TogglePredictionButton.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+TogglePredictionButton.Position = UDim2.new(0.0792079195, 0, 1.2, 0)
+TogglePredictionButton.Size = UDim2.new(0, 120, 0, 30)
+TogglePredictionButton.Font = Enum.Font.SourceSansSemibold
+TogglePredictionButton.Text = "Toggle Prediction"
+TogglePredictionButton.TextScaled = true
+
+TogglePredictionButton.MouseButton1Click:Connect(function()
+    PredictionFrame.Visible = not PredictionFrame.Visible
+end)
+
+-- Update prediction values when focus is lost
+PredictionInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local newValue = tonumber(PredictionInput.Text)
+        if newValue then
+            Prediction = newValue
+            PredictionInput.Text = tostring(Prediction)
+        else
+            PredictionInput.Text = tostring(Prediction)
+        end
+    end
+end)
+
+HorizontalPredictionInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local newValue = tonumber(HorizontalPredictionInput.Text)
+        if newValue then
+            HorizontalPrediction = newValue
+            HorizontalPredictionInput.Text = tostring(HorizontalPrediction)
+        else
+            HorizontalPredictionInput.Text = tostring(HorizontalPrediction)
+        end
+    end
+end)
+
+VerticalPredictionInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local newValue = tonumber(VerticalPredictionInput.Text)
+        if newValue then
+            VerticalPrediction = newValue
+            VerticalPredictionInput.Text = tostring(VerticalPrediction)
+        else
+            VerticalPredictionInput.Text = tostring(VerticalPrediction)
+        end
+    end
+end)
+
+-- Make the Toggle Prediction Button draggable for mobile users
+local UIS = game:GetService("UserInputService")
+local dragging, dragInput, dragStart, startPos
+
+local function update(input)
+    local delta = input.Position - dragStart
+    TogglePredictionButton.Position = UDim2.new(
+        startPos.X.Scale,
+        startPos.X.Offset + delta.X,
+        startPos.Y.Scale,
+        startPos.Y.Offset + delta.Y
+    )
 end
+
+TogglePredictionButton.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragging = true
+        dragStart = input.Position
+        startPos = TogglePredictionButton.Position
+
+        input.Changed:Connect(function()
+            if input.UserInputState == Enum.UserInputState.End then
+                dragging = false
+            end
+        end)
+    end
+end)
+
+TogglePredictionButton.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        dragInput = input
+    end
+end)
+
+UIS.InputChanged:Connect(function(input)
+    if input == dragInput and dragging then
+        update(input)
+    end
+end)
