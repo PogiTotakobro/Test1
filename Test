@@ -18,7 +18,6 @@ local Locked = true
 
 getgenv().Key = "q"
 
-
 function FindNearestEnemy()
     local ClosestDistance, ClosestPlayer = math.huge, nil
     local CenterPosition =
@@ -61,7 +60,6 @@ RunService.Heartbeat:Connect(
     end
 )
 
-
 Mouse.KeyDown:Connect(function(k)	
     if k == getgenv().Key then	
             Locked = not Locked	
@@ -91,7 +89,7 @@ MythicLock.Parent = game.CoreGui
 MythicLock.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 
 Frame.Parent = MythicLock
-Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Black
 Frame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Frame.BorderSizePixel = 0
 Frame.Position = UDim2.new(0.133798108, 0, 0.20107238, 0)
@@ -110,7 +108,7 @@ UICorner.Parent = Frame
 
 Logo.Name = "Logo"
 Logo.Parent = Frame
-Logo.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+Logo.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Black
 Logo.BackgroundTransparency = 5.000
 Logo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Logo.BorderSizePixel = 0
@@ -120,7 +118,7 @@ Logo.Image = "rbxassetid://2233"
 Logo.ImageTransparency = 0.200
 
 TextButton.Parent = Frame
-TextButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Black
 TextButton.BackgroundTransparency = 5.000
 TextButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TextButton.BorderSizePixel = 0
@@ -128,7 +126,7 @@ TextButton.Position = UDim2.new(0.0792079195, 0, 0.18571429, 0)
 TextButton.Size = UDim2.new(0, 170, 0, 44)
 TextButton.Font = Enum.Font.SourceSansSemibold
 TextButton.Text = "Toggle CamLock"
-TextButton.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+TextButton.TextColor3 = Color3.fromRGB(0, 0, 0) -- Purple
 TextButton.TextScaled = true
 TextButton.TextSize = 14.000
 TextButton.TextWrapped = true
@@ -148,7 +146,9 @@ TextButton.MouseButton1Click:Connect(
     end
 )
 
+
 -- Add FOV functionality
+
 local FOVCircle = Drawing.new("Circle")
 FOVCircle.Visible = false -- Initially hidden
 FOVCircle.Color = Color3.fromRGB(0, 0, 0) -- Black
@@ -177,7 +177,7 @@ local AutoAirState = false
 
 local AutoAirButton = Instance.new("TextButton")
 AutoAirButton.Parent = Frame
-AutoAirButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+AutoAirButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Black
 AutoAirButton.BackgroundTransparency = 5.000
 AutoAirButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
 AutoAirButton.BorderSizePixel = 0
@@ -185,7 +185,7 @@ AutoAirButton.Position = UDim2.new(0.0792079195, 0, 0.7, 0) -- Below the Camlock
 AutoAirButton.Size = UDim2.new(0, 120, 0, 30) -- Smaller size
 AutoAirButton.Font = Enum.Font.SourceSansSemibold
 AutoAirButton.Text = "Toggle AutoAir"
-AutoAirButton.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+AutoAirButton.TextColor3 = Color3.fromRGB(0, 0, 0) -- Purple
 AutoAirButton.TextScaled = true
 AutoAirButton.TextSize = 12.000
 AutoAirButton.TextWrapped = true
@@ -225,7 +225,7 @@ end)
 -- Create a frame for the Prediction changer GUI
 local PredictionFrame = Instance.new("Frame")
 PredictionFrame.Parent = MythicLock
-PredictionFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
+PredictionFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Black
 PredictionFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 PredictionFrame.BorderSizePixel = 0
 PredictionFrame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Center of the screen
@@ -238,7 +238,7 @@ local PredictionTitle = Instance.new("TextLabel")
 PredictionTitle.Parent = PredictionFrame
 PredictionTitle.Text = "Prediction Changer"
 PredictionTitle.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-PredictionTitle.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+PredictionTitle.TextColor3 = Color3.fromRGB(128, 128, 128) -- Purple
 PredictionTitle.Size = UDim2.new(1, 0, 0.2, 0)
 PredictionTitle.Font = Enum.Font.SourceSansBold
 PredictionTitle.TextScaled = true
@@ -246,7 +246,7 @@ PredictionTitle.TextScaled = true
 local PredictionInput = Instance.new("TextBox")
 PredictionInput.Parent = PredictionFrame
 PredictionInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-PredictionInput.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+PredictionInput.TextColor3 = Color3.fromRGB(128, 128, 128) -- Purple
 PredictionInput.Position = UDim2.new(0.1, 0, 0.3, 0)
 PredictionInput.Size = UDim2.new(0.8, 0, 0.2, 0)
 PredictionInput.Font = Enum.Font.SourceSansSemibold
@@ -257,7 +257,7 @@ PredictionInput.TextScaled = true
 local HorizontalPredictionInput = Instance.new("TextBox")
 HorizontalPredictionInput.Parent = PredictionFrame
 HorizontalPredictionInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-HorizontalPredictionInput.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+HorizontalPredictionInput.TextColor3 = Color3.fromRGB(128, 128, 128) -- Purple
 HorizontalPredictionInput.Position = UDim2.new(0.1, 0, 0.55, 0)
 HorizontalPredictionInput.Size = UDim2.new(0.8, 0, 0.2, 0)
 HorizontalPredictionInput.Font = Enum.Font.SourceSansSemibold
@@ -268,7 +268,7 @@ HorizontalPredictionInput.TextScaled = true
 local VerticalPredictionInput = Instance.new("TextBox")
 VerticalPredictionInput.Parent = PredictionFrame
 VerticalPredictionInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-VerticalPredictionInput.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
+VerticalPredictionInput.TextColor3 = Color3.fromRGB(128, 128, 128) -- Purple
 VerticalPredictionInput.Position = UDim2.new(0.1, 0, 0.8, 0)
 VerticalPredictionInput.Size = UDim2.new(0.8, 0, 0.2, 0)
 VerticalPredictionInput.Font = Enum.Font.SourceSansSemibold
@@ -277,17 +277,24 @@ VerticalPredictionInput.PlaceholderText = "Vertical Prediction"
 VerticalPredictionInput.TextScaled = true
 
 -- Button to toggle the visibility of the Prediction changer GUI
-local TogglePredictionButton = Instance.new("TextButton")
-TogglePredictionButton.Parent = Frame
-TogglePredictionButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Black
-TogglePredictionButton.TextColor3 = Color3.fromRGB(128, 0, 128) -- Purple
-TogglePredictionButton.Position = UDim2.new(0.0792079195, 0, 1.2, 0)
-TogglePredictionButton.Size = UDim2.new(0, 120, 0, 30)
-TogglePredictionButton.Font = Enum.Font.SourceSansSemibold
-TogglePredictionButton.Text = "Toggle Prediction"
-TogglePredictionButton.TextScaled = true
+local MythicButton = Instance.new("TextButton") -- Renamed to "Mythic"
+MythicButton.Parent = Frame
+MythicButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background
+MythicButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- Black outline
+MythicButton.BorderSizePixel = 1 -- Define the outline thickness
+MythicButton.Position = UDim2.new(0.0792079195, 0, 1.2, 0)
+MythicButton.Size = UDim2.new(0, 120, 0, 30)
+MythicButton.Font = Enum.Font.SourceSansSemibold
+MythicButton.Text = "Mythic Gui" -- Updated text
+MythicButton.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text
+MythicButton.TextScaled = true
 
-TogglePredictionButton.MouseButton1Click:Connect(function()
+-- Add UICorner for rounded square shape
+local MythicButtonCorner = Instance.new("UICorner")
+MythicButtonCorner.CornerRadius = UDim.new(0.2, 0) -- Adjust for desired roundness
+MythicButtonCorner.Parent = MythicButton
+
+MythicButton.MouseButton1Click:Connect(function()
     PredictionFrame.Visible = not PredictionFrame.Visible
 end)
 
@@ -334,7 +341,7 @@ local dragging, dragInput, dragStart, startPos
 
 local function update(input)
     local delta = input.Position - dragStart
-    TogglePredictionButton.Position = UDim2.new(
+    MythicButton.Position = UDim2.new(
         startPos.X.Scale,
         startPos.X.Offset + delta.X,
         startPos.Y.Scale,
@@ -342,11 +349,11 @@ local function update(input)
     )
 end
 
-TogglePredictionButton.InputBegan:Connect(function(input)
+MythicButton.InputBegan:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
         dragging = true
         dragStart = input.Position
-        startPos = TogglePredictionButton.Position
+        startPos = MythicButton.Position
 
         input.Changed:Connect(function()
             if input.UserInputState == Enum.UserInputState.End then
@@ -356,7 +363,7 @@ TogglePredictionButton.InputBegan:Connect(function(input)
     end
 end)
 
-TogglePredictionButton.InputChanged:Connect(function(input)
+MythicButton.InputChanged:Connect(function(input)
     if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
         dragInput = input
     end
