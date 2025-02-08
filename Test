@@ -234,13 +234,16 @@ RunService.RenderStepped:Connect(function()
 end)
 
 -- Create a frame for the Prediction changer GUI
+local FallOffset = 0.05
+local JumpOffset = 0.1
+
 local PredictionFrame = Instance.new("Frame")
 PredictionFrame.Parent = MythicLock
 PredictionFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Black
 PredictionFrame.BorderColor3 = Color3.fromRGB(0, 0, 0)
 PredictionFrame.BorderSizePixel = 0
-PredictionFrame.Position = UDim2.new(0.5, -150, 0.5, -100) -- Center of the screen
-PredictionFrame.Size = UDim2.new(0, 300, 0, 150) -- Frame size
+PredictionFrame.Position = UDim2.new(0.5, -150, 0.5, -150) -- Center of the screen
+PredictionFrame.Size = UDim2.new(0, 300, 0, 200) -- Increased size for new inputs
 PredictionFrame.Visible = false -- Initially hidden
 PredictionFrame.Active = true
 PredictionFrame.Draggable = true
@@ -286,6 +289,28 @@ VerticalPredictionInput.Font = Enum.Font.SourceSansSemibold
 VerticalPredictionInput.Text = tostring(VerticalPrediction)
 VerticalPredictionInput.PlaceholderText = "Vertical Prediction"
 VerticalPredictionInput.TextScaled = true
+
+local FallOffsetInput = Instance.new("TextBox")
+FallOffsetInput.Parent = PredictionFrame
+FallOffsetInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+FallOffsetInput.TextColor3 = Color3.fromRGB(128, 128, 128) -- Purple
+FallOffsetInput.Position = UDim2.new(0.1, 0, 1.05, 0)
+FallOffsetInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+FallOffsetInput.Font = Enum.Font.SourceSansSemibold
+FallOffsetInput.Text = tostring(FallOffset)
+FallOffsetInput.PlaceholderText = "Fall Offset"
+FallOffsetInput.TextScaled = true
+
+local JumpOffsetInput = Instance.new("TextBox")
+JumpOffsetInput.Parent = PredictionFrame
+JumpOffsetInput.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+JumpOffsetInput.TextColor3 = Color3.fromRGB(128, 128, 128) -- Purple
+JumpOffsetInput.Position = UDim2.new(0.1, 0, 1.3, 0)
+JumpOffsetInput.Size = UDim2.new(0.8, 0, 0.2, 0)
+JumpOffsetInput.Font = Enum.Font.SourceSansSemibold
+JumpOffsetInput.Text = tostring(JumpOffset)
+JumpOffsetInput.PlaceholderText = "Jump Offset"
+JumpOffsetInput.TextScaled = true
 
 -- Button to toggle the visibility of the Prediction changer GUI
 local MythicButton = Instance.new("TextButton") -- Renamed to "Mythic"
@@ -337,6 +362,26 @@ VerticalPredictionInput.FocusLost:Connect(function(enterPressed)
             VerticalPrediction = newValue
         end
         VerticalPredictionInput.Text = tostring(VerticalPrediction)
+    end
+end)
+
+FallOffsetInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local newValue = tonumber(FallOffsetInput.Text)
+        if newValue then
+            FallOffset = newValue
+        end
+        FallOffsetInput.Text = tostring(FallOffset)
+    end
+end)
+
+JumpOffsetInput.FocusLost:Connect(function(enterPressed)
+    if enterPressed then
+        local newValue = tonumber(JumpOffsetInput.Text)
+        if newValue then
+            JumpOffset = newValue
+        end
+        JumpOffsetInput.Text = tostring(JumpOffset)
     end
 end)
 
