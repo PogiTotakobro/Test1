@@ -54,7 +54,16 @@ RunService.Heartbeat:Connect(
         if CamlockState == true then
             if enemy then
                 local camera = workspace.CurrentCamera
-                camera.CFrame = CFrame.new(camera.CFrame.p, enemy.Position + enemy.Velocity * Prediction)
+                
+camera.CFrame = CFrame.new(
+    camera.CFrame.p,
+    enemy.Position + Vector3.new(
+        enemy.Velocity.X * HorizontalPrediction,
+        enemy.Velocity.Y * VerticalPrediction,
+        enemy.Velocity.Z * Prediction
+    )
+)
+
             end
         end
     end
@@ -114,7 +123,7 @@ Logo.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Logo.BorderSizePixel = 0
 Logo.Position = UDim2.new(0.326732665, 0, 0, 0)
 Logo.Size = UDim2.new(0, 70, 0, 70)
-Logo.Image = "rbxassetid://2233"
+Logo.Image = "rbxassetid://94474379485493"
 Logo.ImageTransparency = 0.200
 
 TextButton.Parent = Frame
@@ -177,18 +186,20 @@ local AutoAirState = false
 
 local AutoAirButton = Instance.new("TextButton")
 AutoAirButton.Parent = Frame
-AutoAirButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Black
-AutoAirButton.BackgroundTransparency = 5.000
-AutoAirButton.BorderColor3 = Color3.fromRGB(0, 0, 0)
-AutoAirButton.BorderSizePixel = 0
-AutoAirButton.Position = UDim2.new(0.0792079195, 0, 0.7, 0) -- Below the Camlock button
-AutoAirButton.Size = UDim2.new(0, 120, 0, 30) -- Smaller size
+AutoAirButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- White background
+AutoAirButton.BorderColor3 = Color3.fromRGB(0, 0, 0) -- Black outline
+AutoAirButton.BorderSizePixel = 1 -- Outline thickness
+AutoAirButton.Position = UDim2.new(0.1, 0, 0.8, 0) -- Adjusted position below other buttons
+AutoAirButton.Size = UDim2.new(0, 100, 0, 25) -- Compact size
 AutoAirButton.Font = Enum.Font.SourceSansSemibold
-AutoAirButton.Text = "Toggle AutoAir"
-AutoAirButton.TextColor3 = Color3.fromRGB(0, 0, 0) -- Purple
+AutoAirButton.Text = "Auto Air"
+AutoAirButton.TextColor3 = Color3.fromRGB(0, 0, 0) -- Black text
 AutoAirButton.TextScaled = true
-AutoAirButton.TextSize = 12.000
-AutoAirButton.TextWrapped = true
+
+-- Add UICorner for rounded square shape
+local AutoAirButtonCorner = Instance.new("UICorner")
+AutoAirButtonCorner.CornerRadius = UDim.new(0.2, 0) -- Adjust for desired roundness
+AutoAirButtonCorner.Parent = AutoAirButton
 
 -- AutoAir button functionality
 AutoAirButton.MouseButton1Click:Connect(
@@ -304,10 +315,8 @@ PredictionInput.FocusLost:Connect(function(enterPressed)
         local newValue = tonumber(PredictionInput.Text)
         if newValue then
             Prediction = newValue
-            PredictionInput.Text = tostring(Prediction)
-        else
-            PredictionInput.Text = tostring(Prediction)
         end
+        PredictionInput.Text = tostring(Prediction)
     end
 end)
 
@@ -316,10 +325,8 @@ HorizontalPredictionInput.FocusLost:Connect(function(enterPressed)
         local newValue = tonumber(HorizontalPredictionInput.Text)
         if newValue then
             HorizontalPrediction = newValue
-            HorizontalPredictionInput.Text = tostring(HorizontalPrediction)
-        else
-            HorizontalPredictionInput.Text = tostring(HorizontalPrediction)
         end
+        HorizontalPredictionInput.Text = tostring(HorizontalPrediction)
     end
 end)
 
@@ -328,10 +335,8 @@ VerticalPredictionInput.FocusLost:Connect(function(enterPressed)
         local newValue = tonumber(VerticalPredictionInput.Text)
         if newValue then
             VerticalPrediction = newValue
-            VerticalPredictionInput.Text = tostring(VerticalPrediction)
-        else
-            VerticalPredictionInput.Text = tostring(VerticalPrediction)
         end
+        VerticalPredictionInput.Text = tostring(VerticalPrediction)
     end
 end)
 
